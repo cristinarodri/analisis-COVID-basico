@@ -2,7 +2,14 @@
 title: "Análisis de datos COVID-19 en Costa Rica - Gráficos del paquete base"
 author: "Cristina Rodríguez"
 date: '2022-05-11'
-output: html_document
+output:
+  html_document:
+    theme: readable    
+    toc: true
+    toc_depth: 5
+    toc_float:
+      collapsed: false
+      smooth_scroll: false
 ---
 
 ```{r setup, include=FALSE}
@@ -43,6 +50,107 @@ covid$FECHA <- as.Date(covid$FECHA, format = "%d/%m/%Y")
 ##### Casos positivos
 
 ```{r casos-positivos-acumulados}
-plot(covid$FECHA, covid$positivos, main = "Casos acumulados positivos de COVID-19 en Costa Rica", xlab = "Fecha", ylab = "casos")
+plot(covid$FECHA, covid$positivos,
+     type = "l",
+     xaxt = "n",
+     yaxt = "n",
+     main = "Casos acumulados positivos de COVID-19 en Costa Rica",
+     xlab = "Fecha",
+     ylab = "casos")
+
+axis(side = 1,
+     covid$FECHA,
+     tick = FALSE,
+     format(covid$FECHA, "%m-%y"),
+     cex.axis = .7
+     )
+
+axis(
+  side = 2,
+  covid$positivos,
+  labels = TRUE,  
+  at = seq(0, 1000000, by = 200000),
+  cex.axis = .7
+)
+
+```
+
+##### Fallecidos
+
+```{r casos-fallecidos-acumulados}
+plot(covid$FECHA, covid$fallecidos,
+     type = "l",
+     xaxt = "n",
+     yaxt = "n",
+     main = "Muertes por COVID-19 en Costa Rica",
+     xlab = "Fecha",
+     ylab = "Cantidad de fallecidos")
+
+axis(side = 1,
+     covid$FECHA,
+     tick = FALSE,
+     format(covid$FECHA, "%m-%y"),
+     cex.axis = .7
+     )
+
+axis(
+  side = 2,
+  covid$fallecidos,
+  labels = TRUE,  
+  at = seq(0, 10000, by = 2000),
+  cex.axis = .7
+)
+```
+
+
+##### Otros
+
+```{r casos-otros-acumulados}
+plot(
+  covid$FECHA,
+  covid$positivos,
+     type = "l",
+     xaxt = "n",
+     yaxt = "n",
+     main = "Muertes por COVID-19 en Costa Rica",
+     xlab = "Fecha",
+     ylab = "Cantidad de fallecidos", 
+     col = "blue"
+  )
+
+# Casos activos
+lines(covid$FECHA, covid$activos, col="red")
+
+# Casos recuperados
+lines(covid$FECHA, covid$RECUPERADOS, col="green")
+
+# Casos fallecidos
+lines(covid$FECHA, covid$fallecidos, col="black")
+
+# Leyenda
+legend(
+  x = "topleft",
+  inset = 0.03,
+  legend = c("Positivos", "Activos", "Recuperados", "Fallecidos"),
+  col = c("blue", "red", "green", "black"),
+  lty = 1,
+  cex = 0.7)
+
+# Formato eje x
+axis(side = 1,
+     covid$FECHA,
+     tick = FALSE,
+     format(covid$FECHA, "%m-%y"),
+     cex.axis = .7
+     )
+
+# Formato eje y
+axis(
+  side = 2,
+  covid$fallecidos,
+  labels = TRUE,  
+  at = seq(0, 1000000, by = 200000),
+  cex.axis = .7
+)
 ```
 
